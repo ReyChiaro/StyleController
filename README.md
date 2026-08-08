@@ -14,11 +14,11 @@
 </p>
 
 <p align="center">
-  <a href=""><img alt="Hugging Face Dataset" src="https://img.shields.io/badge/%F0%9F%A4%97-Dataset-FFD21E?style=flat-square"></a>
+  <a href="https://huggingface.co/datasets/ReyChiaro/SmoothStyle"><img alt="Hugging Face Dataset" src="https://img.shields.io/badge/%F0%9F%A4%97-Dataset-FFD21E?style=flat-square"></a>
   <a href=""><img alt="Hugging Face Model" src="https://img.shields.io/badge/%F0%9F%A4%97-Model-FFD21E?style=flat-square"></a>
   <a href=""><img alt="Project Page" src="https://img.shields.io/badge/Project-Page-CB8B65?style=flat-square&logo=githubpages&logoColor=white"></a>
   <a href=""><img alt="arXiv" src="https://img.shields.io/badge/arXiv-Paper-B31B1B?style=flat-square&logo=arxiv&logoColor=white"></a>
-  <a href=""><img alt="GitHub Code" src="https://img.shields.io/badge/GitHub-Code-181717?style=flat-square&logo=github&logoColor=white"></a>
+  <a href="https://github.com/ReyChiaro/StyleController"><img alt="GitHub" src="https://img.shields.io/badge/GitHub-Code-181717?style=flat-square&logo=github&logoColor=white"></a>
 </p>
 
 StyleController is a controllable image stylization framework built on `diffusers`. Given a content image, a style reference, and a text instruction, it generates high-fidelity stylized images with explicit control over style strength.
