@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Staying True to the Origin: Continuous Image Stylization with Smooth Transitions.">
+    <meta name="theme-color" content="#ffffff">
+    <title>Staying True to the Origin</title>
+    <script>document.documentElement.classList.add("js");</script>
+    <link rel="stylesheet" href="./assets/css/main.css">
+    <script src="./assets/js/main.js" defer></script>
+  </head>
+  <body>
+    <header class="hero reveal">
+      <div class="accent-line" aria-hidden="true"></div>
+      <h1>Staying True to the Origin</h1>
+      <p class="subtitle">Continuous Image Stylization with Smooth Transitions</p>
+
+      <p class="authors">
+        <!-- A mailto link can be replaced with the author's personal homepage URL. -->
+        <a class="author-link" href="mailto:chiaroair@gmail.com" title="Email Rui Xu">Rui Xu</a>
+        <a class="author-link" href="mailto:hammershock@163.com" title="Email Hanmo Zhang">Hanmo Zhang</a>
+        <a class="author-link corresponding-author" href="mailto:liusonghua@sjtu.edu.cn" title="Email Songhua Liu">Songhua Liu<sup class="corresponding-marker" aria-label="Corresponding author">*</sup></a>
+      </p>
+      <p class="affiliation">Shanghai Jiao Tong University</p>
+
+      <!-- Replace each empty resource URL and remove placeholder-link/aria-disabled when published. -->
+      <nav class="resource-links" aria-label="Project resources">
+        <a class="resource-link placeholder-link" href="#" aria-disabled="true">
+          <span class="resource-icon">HF</span>
+          <span>Dataset</span>
+        </a>
+        <a class="resource-link placeholder-link" href="#" aria-disabled="true">
+          <span class="resource-icon">HF</span>
+          <span>Model</span>
+        </a>
+        <a class="resource-link placeholder-link" href="#" aria-disabled="true">
+          <span class="resource-icon">P</span>
+          <span>Project Page</span>
+        </a>
+        <a class="resource-link placeholder-link" href="#" aria-disabled="true">
+          <span class="resource-icon resource-icon-wide">arXiv</span>
+          <span>Paper</span>
+        </a>
+        <a class="resource-link placeholder-link" href="#" aria-disabled="true">
+          <span class="resource-icon">GH</span>
+          <span>Code</span>
+        </a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="section reveal" id="abstract">
+        <h2>Abstract</h2>
+        <p>
+          Recent advances in generative models have achieved remarkable performance in
+          text- and image-conditioned editing. However, preserving the content of a given
+          image while referencing style patterns from another remains challenging, often
+          leading to uncontrollable stylization results. In this paper, we approach image
+          stylization from the perspective of continuous control, aiming to enable modern
+          Diffusion Transformer (DiT)-based multi-reference editing models to faithfully
+          preserve the semantic structure of the content image, render strong stylization
+          effects, and smoothly transition between the two.
+        </p>
+        <p>
+          We propose a simple yet effective two-stage training strategy together with a
+          style-strength-aware spline formulation. The model first learns a strongly
+          stylized endpoint while preserving content semantics. With the base model frozen,
+          lightweight anchor projectors then map discrete stylization strengths into a
+          low-rank parameter space. At inference time, strength-aware spline interpolation
+          enables precise, continuous control over stylization strength while maintaining
+          high-fidelity results.
+        </p>
+      </section>
+
+      <section class="section reveal" id="experiments">
+        <h2>Experiments</h2>
+        <p class="section-intro">
+          We evaluate stylization quality with content FID, style FID, LPIPS, ArtFID,
+          CLIP image similarity, and style loss. Lower values are better for every metric
+          except CLIP-I. Experiments use QwenImage unless otherwise specified.
+        </p>
+
+        <div class="table-frame" tabindex="0" aria-label="Scrollable quantitative comparison table">
+          <table>
+            <caption>Quantitative comparison of stylization performance.</caption>
+            <thead>
+              <tr>
+                <th scope="col">Method</th>
+                <th scope="col">c-FID ↓</th>
+                <th scope="col">s-FID ↓</th>
+                <th scope="col">LPIPS ↓</th>
+                <th scope="col">ArtFID ↓</th>
+                <th scope="col">CLIP-I ↑</th>
+                <th scope="col">SL ↓</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">StyleID</th><td>118.91</td><td>188.48</td><td>0.4517</td><td>275.06</td><td>0.8671</td><td>6.0182</td>
+              </tr>
+              <tr>
+                <th scope="row">StyleSSP</th><td>109.10</td><td>186.64</td><td>0.4787</td><td>277.47</td><td>0.8553</td><td>6.0903</td>
+              </tr>
+              <tr>
+                <th scope="row">CSGO</th><td>140.77</td><td>174.50</td><td>0.6008</td><td>280.94</td><td>0.7954</td><td>9.0661</td>
+              </tr>
+              <tr>
+                <th scope="row">InstantStyle-Plus</th><td>86.43</td><td>202.21</td><td>0.3486</td><td>274.05</td><td>0.9115</td><td>7.4530</td>
+              </tr>
+              <tr class="group-start">
+                <th scope="row">FLUX + OmniStyle</th><td>123.35</td><td>181.90</td><td>0.5404</td><td>281.74</td><td>0.8546</td><td>6.9905</td>
+              </tr>
+              <tr class="ours">
+                <th scope="row">FLUX + Ours</th><td>91.32</td><td>188.09</td><td>0.3448</td><td>254.29</td><td>0.9030</td><td><strong>4.6925</strong></td>
+              </tr>
+              <tr class="group-start">
+                <th scope="row">QwenImage</th><td>125.91</td><td>165.74</td><td>0.5881</td><td>264.81</td><td>0.7883</td><td>7.4404</td>
+              </tr>
+              <tr class="ours">
+                <th scope="row">QwenImage + Ours</th><td><strong>65.95</strong></td><td><strong>165.67</strong></td><td><strong>0.3246</strong></td><td><strong>220.79</strong></td><td><strong>0.9241</strong></td><td>4.9693</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <article class="result-block reveal">
+          <h3>Stylization Quality</h3>
+          <p>
+            At both moderate strength (<em>s</em> = 0.4) and stronger stylization
+            (<em>s</em> = 0.9), our method better preserves content structure while
+            transferring global color palettes and fine local patterns from the style reference.
+          </p>
+          <figure>
+            <img
+              src="./assets/images/stylization-comparison.webp"
+              alt="Stylization comparisons between StyCtrl and baseline methods across six content and style pairs."
+              width="1587"
+              height="1117"
+              loading="lazy"
+              decoding="async"
+            >
+            <figcaption>
+              Stylization comparisons with OmniStyle, StyleID, InstantStyle-Plus,
+              StyleSSP, and CSGO.
+            </figcaption>
+          </figure>
+        </article>
+
+        <article class="result-block reveal">
+          <h3>Smooth Transition Paths</h3>
+          <p>
+            Morphing baselines require a ground-truth stylized endpoint. Our method instead
+            generates a continuous path directly from the content and style references,
+            progressively injecting style while retaining more stable content semantics.
+          </p>
+          <figure>
+            <img
+              src="./assets/images/morphing-comparison.webp"
+              alt="Continuous stylization paths compared with FreeMorph and DiffMorpher."
+              width="2418"
+              height="1354"
+              loading="lazy"
+              decoding="async"
+            >
+            <figcaption>
+              Continuous stylization compared with FreeMorph and DiffMorpher.
+            </figcaption>
+          </figure>
+        </article>
+      </section>
+
+      <section class="section citation-section reveal" id="citation">
+        <div class="section-heading-row">
+          <h2>Citation</h2>
+          <button class="copy-button" type="button" data-copy-target="citation-code">
+            Copy BibTeX
+          </button>
+        </div>
+        <pre id="citation-code"><code>@article{xu2026staying,
+  title={Staying True to the Origin: Continuous Image Stylization with Smooth Transitions},
+  author={Xu, Rui and Zhang, Hanmo and Liu, Songhua},
+  journal={arXiv preprint},
+  year={2026}
+}</code></pre>
+      </section>
+    </main>
+
+    <footer>
+      <div class="accent-line" aria-hidden="true"></div>
+      <p>StyCtrl · Released under the MIT License.</p>
+      <p><sup>*</sup> Corresponding author.</p>
+    </footer>
+  </body>
+</html>

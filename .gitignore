@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+experiment/
+figs/
+scripts/
+dataset/
+SmoothStyle/
+strotss*/
+metrics.py/
+checkpoints/
+submissions/
+tests/
+
+*.tar
+*.tar.gz
+*.safetensors

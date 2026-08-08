@@ -1,0 +1,43 @@
+defaults:
+  - default
+  - _self_
+
+project_name: fluxkontext_styctrl
+
+finetuner:
+  _target_: tuner.FluxKontextFinetuner
+  pretrained_pipeline: black-forest-labs/FLUX.1-Kontext-dev
+  lora_layer_range: ${styctrl.lora_layer_range}
+  load_dit: true
+  load_text_encoder: true
+  timestep_weighting_scheme: logit_normal
+  lr: 1.0
+  max_grad_norm: 1.0
+  mu_logit_mean: 0.0
+  mu_logit_std: 1.0
+  mu_mode_scale: 1.29
+  modules_require_grad: ["lora_A", "lora_B"]
+  torch_dtype: ${mixed_precision}
+
+styctrl:
+  lora_layer_range: [0, 57]
+  lora_target_modules: [
+    "attn.to_q",
+    "attn.to_k",
+    "attn.to_v",
+    "attn.to_out.0",
+    "attn.add_q_proj",
+    "attn.add_k_proj",
+    "attn.add_v_proj",
+    "attn.to_add_out",
+    "ff.net.2",
+    "ff_context.net.2",
+    # "proj_mlp",
+    # "proj_out",
+  ]
+  rank: 32
+  adapter_name: styctrl
+  proj_type: none
+  bias: false
+  checkpoint_path: null
+  dtype: ${mixed_precision}

@@ -1,0 +1,84 @@
+timestamp: ${now:%Y%m%d-%H%M%S}
+output_dir: experiment/outputs
+project_name: qwenimage_styctrl
+
+# Accelerator
+mixed_precision: bf16
+gradient_accumulation: 1
+log_with: tensorboard
+project_dir: ${output_dir}/${project_name}/${timestamp}
+logging_dir: ${project_dir}/tensorboard
+log_file: ${project_dir}/${project_name}.log
+
+# Training Loop
+seed: 42
+max_training_steps: 5000
+checkpointing_steps: 1000
+validation_steps: 2500
+
+# Data Loading
+train_batch_size: 1
+val_batch_size: 1
+train_num_workers: 8
+val_num_workers: 1
+
+# Datasets
+trainset:
+  _target_: data_module.SmoothStyleDataset
+  dataset_dir: SmoothStyle
+  split: train
+  txt_latent_dir: null
+  image_height: 1024
+  image_width: 1024
+  target_strength: [10]
+
+valset:
+  _target_: data_module.SmoothStyleDataset
+  dataset_dir: SmoothStyle
+  split: test
+  txt_latent_dir: null
+  image_height: 1024
+  image_width: 1024
+  target_strength: [10]
+
+# Finetuner
+finetuner:
+  _target_: tuner.QwenImageEditFinetuner
+  pretrained_pipeline: Qwen/Qwen-Image-Edit-2509
+  lora_layer_range: ${styctrl.lora_layer_range}
+  load_dit: true
+  load_text_encoder: false
+  timestep_weighting_scheme: logit_normal
+  lr: 1.0
+  max_grad_norm: 1.0
+  mu_logit_mean: 0.0
+  mu_logit_std: 1.0
+  mu_mode_scale: 1.29
+  modules_require_grad: ["lora_A", "lora_B"]   # lora_A | lora_B | projector | bias
+  torch_dtype: ${mixed_precision}
+
+styctrl:
+  lora_layer_range: [0, 59]
+  lora_target_modules: [
+    "attn.to_q",
+    "attn.to_k",
+    "attn.to_v",
+    "attn.to_out.0",
+    "attn.add_q_proj",
+    "attn.add_k_proj",
+    "attn.add_v_proj",
+    "attn.to_add_out",
+    "img_mlp.net.2",
+    "txt_mlp.net.2",
+  ]
+  rank: 128
+  adapter_name: styctrl
+  proj_type: none
+  bias: true
+  checkpoint_path: null
+  dtype: ${mixed_precision}
+
+
+hydra:
+  run:
+    dir: ${project_dir}/hydra-configs
